@@ -14,7 +14,8 @@ class Api::V1::UsersController < ApplicationController
     end
 
     if cabs.present?
-      render json: success(cabs) and return
+      data = prepare_data(cabs)
+      render json: success(data) and return
     else
       render json: not_available and return
     end
@@ -74,5 +75,20 @@ class Api::V1::UsersController < ApplicationController
       message: 'Oops!!! No cabs are available, try in sometime!'
     }
     response.to_json  
+  end
+
+  def prepare_data(cabs)
+    data = []
+    cabs.each do |cab|
+      obj = {}
+      obj[:name] = cab.name
+      obj[:model] = cab.model
+      obj[:number] = cab.number
+      obj[:ctype] = cab.ctype
+      obj[:current_location] = cab.current_location
+      obj[:driver] = cab.driver
+      data << obj
+    end
+    data
   end
 end

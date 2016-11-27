@@ -4,6 +4,10 @@ class Cab < ActiveRecord::Base
 
   belongs_to :driver
   has_one :current_location, as: :source, class_name: 'Location'
+  has_many :trips
+
+  validates_presence_of :name, :model, :number, :driver
+  validates_uniqueness_of :number
 
   def mark_available(location)
     self.available = true
