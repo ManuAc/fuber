@@ -1,0 +1,91 @@
+<div id="map" style="width: 500px; height: 500px;"></div>
+
+<script type="text/javascript", src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+<script>
+  function draw_map(locations) {
+    window.map = new google.maps.Map(document.getElementById('map'), {
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        center: {lat: 12.956259012, lng: 77.653463077}
+    });
+
+    var infowindow = new google.maps.InfoWindow({map: map});
+
+    var bounds = new google.maps.LatLngBounds();
+
+    for (i = 0; i < locations.length; i++) {
+        marker = new google.maps.Marker({
+            position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+            map: map
+        });
+
+        bounds.extend(marker.position);
+
+        google.maps.event.addListener(marker, 'click', (function (marker, i) {
+            return function () {
+                infowindow.setContent(locations[i][0]);
+                infowindow.open(map, marker);
+            }
+        })(marker, i));
+    }
+
+    map.fitBounds(bounds);
+
+    var listener = google.maps.event.addListener(map, "idle", function () {
+        map.setZoom(16);
+        google.maps.event.removeListener(listener);
+    });
+  }
+
+  function locations() {
+    return [
+      ["ManuAc Bmw X1 black", "12.956259012", "77.653463077", 1],
+      ["RahulR Audi A6 pink", "12.956334542", "77.654563051", 2],
+      ["Akash Merc F1 black", "12.956452012", "77.655633077", 3],
+      ["Sachin Bmw F1 pink", "12.956352052", "77.654643077", 4]
+    ]
+  }
+
+  function fetch_data(draw_map) {
+    // Fetch data from remote
+    // var url = 'http://localhost:3000/api/v1/users/1/cabs?latitude=12.956259012&longitude=77.653463077&city=bangalore'
+    // $.ajax({
+    //   url: url,
+    //   success: function(response) {
+    //     var locations = []
+    //     if (response['code'] == 200) {
+    //       var data = response['data'];
+    //       for (i = 0; i < data.length; i++) {
+    //         object = data[i];
+    //         var info = object['driver']['name'] + ' ' + object['name'] + ' ' + object['model'];
+    //         var latitude = object['current_location']['latitude'];
+    //         var longitude = object['current_location']['longitude'];
+    //         locations.push([info, latitude, longitude, i]);
+    //       }
+    //     } else {
+    //       if (response['code'] == 404) {
+    //         alert(response['data']['message']);
+    //       } else if (response['code'] == 404) {
+    //         alert(response['error']['message']);
+    //       }
+    //       return;
+    //     }
+    //     draw_map(locations);
+    //   }
+    // });
+    draw_map(locations());
+  }
+
+  function initialize () {
+    fetch_data(draw_map);
+  }
+
+  function loadScripts() {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&' + 'callback=initialize';
+    document.body.appendChild(script);
+  }
+
+  window.onload = loadScripts;
+</script>
