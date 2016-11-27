@@ -1,28 +1,40 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Dependencies:
 
-Things you may want to cover:
+Ruby >= 2.0
 
-* Ruby version
+Steps:
 
-* System dependencies
+Run bundle install
 
-* Configuration
+Run migrations (bundle exec rake db:migrate)
 
-* Database creation
+Seed the data (bundle exec rake db:seed)
 
-* Database initialization
+Testing:
 
-* How to run the test suite
+localhost:3000/cabs.html - will list all the available cabs. (cab details are stored in memory)
 
-* Services (job queues, cache servers, search engines, etc.)
+APIs: Import the postman api collections using below link and use the same.
 
-* Deployment instructions
+      https://www.getpostman.com/collections/4ce68ab2ad37512b6bfc
 
-* ...
+Main files:
 
+html file - (List of available cabs)
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+app/public/cabs.html
+
+controllers - 
+
+1. app/controllers/api/v1/users_controller.rb
+2. app/controllers/api/v1/cabs_controller.rb
+
+models -
+
+1. app/models/cab.rb
+2. app/models/trip.rb
+3. app/models/location.rb
+4. app/models/user.rb
+5. app/models/driver.rb
